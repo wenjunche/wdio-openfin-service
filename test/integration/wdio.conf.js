@@ -6,14 +6,12 @@ exports.config = {
     ],
 
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'openfin'
     }],
 
     sync: true,
     logLevel: 'verbose',
     coloredLogs: true,
-
-    baseUrl: 'http://webdriver.io',
 
     waitforTimeout: 10000,
     connectionRetryTimeout: 90000,
@@ -27,5 +25,8 @@ exports.config = {
     services: [
         require('../../launcher')
     ],
+    openfin: {
+        manifest: 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/selenium.json'
+    },
     chromeDriverLogs: './'
 }
