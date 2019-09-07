@@ -30,7 +30,7 @@
   "homepage": "https://github.com/wenjunche/wdio-openfin-service#readme",
   "peerDependencies": {},
   "dependencies": {
-    "chromedriver": "^2.36.0",
+    "chromedriver": "2.36.0",
     "fs-extra": "^0.30.0"
   },
   "devDependencies": {
