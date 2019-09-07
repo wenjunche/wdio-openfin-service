@@ -28,11 +28,10 @@
     "url": "https://github.com/wenjunche/wdio-openfin-service/issues"
   },
   "homepage": "https://github.com/wenjunche/wdio-openfin-service#readme",
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "dependencies": {
-    "fs-extra": "^0.30.0",
-    "chromedriver": "2.31.0"
+    "chromedriver": "^2.36.0",
+    "fs-extra": "^0.30.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -54,7 +53,7 @@
     "load-grunt-tasks": "^3.4.1",
     "mocha": "^2.5.3",
     "wdio-mocha-framework": "^0.2.12",
-    "webdriverio": "^4.0.7"
+    "webdriverio": "^5.12.5"
   },
   "contributors": [
     "Wenjun Che<wenjun@openfin.co>"

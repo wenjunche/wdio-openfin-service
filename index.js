@@ -1,4 +1,4 @@
-/**
- * no service required
- */
-module.exports = {}
+
+var Launcher = require('./build/launcher').default;
+module.exports.launcher = Launcher;
+
