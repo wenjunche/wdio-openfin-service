@@ -1,6 +1,6 @@
 {
   "name": "wdio-openfin-service",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "description": "WebdriverIO service to start & stop ChromeDriver with OpenFin Runtime",
   "main": "index.js",
   "scripts": {
@@ -51,9 +51,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^18.0.0",
     "load-grunt-tasks": "^3.4.1",
-    "mocha": "^2.5.3",
-    "wdio-mocha-framework": "^0.2.12",
-    "webdriverio": "^5.12.5"
+    "webdriverio": "^6.1.4"
   },
   "contributors": [
     "Wenjun Che<wenjun@openfin.co>"
