@@ -25,7 +25,6 @@ exports.config = {
     },
 
     services: [
-        // [require('../../build/launcher.js')]
         [ChromeDriverLauncher, {
             logFileName: 'wdio-chromedriver.log',
             outputDir: '.',
