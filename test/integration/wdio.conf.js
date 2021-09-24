@@ -1,21 +1,23 @@
+import ChromeDriverLauncher from '../../lib/launcher'
+
 exports.config = {
-    port: '9515',
+    port: 9515,
     path: '/',
     specs: [
         './test/integration/*.spec.js'
     ],
 
     capabilities: [{
+        maxInstances: 1,
         browserName: 'openfin'
     }],
 
-    sync: true,
     logLevel: 'verbose',
     coloredLogs: true,
 
     waitforTimeout: 10000,
-    connectionRetryTimeout: 90000,
-    connectionRetryCount: 3,
+    connectionRetryTimeout: 900000,
+    connectionRetryCount: 1,
 
     framework: 'mocha',
     mochaOpts: {
@@ -23,10 +25,16 @@ exports.config = {
     },
 
     services: [
-        require('../../launcher')
+        // [require('../../build/launcher.js')]
+        [ChromeDriverLauncher, {
+            logFileName: 'wdio-chromedriver.log',
+            outputDir: '.',
+            args: ['--silent']
+        }]
     ],
     openfin: {
-        manifest: 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/selenium.json'
+        manifest: 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/selenium.json',
+        debuggerPort: 9090
     },
     chromeDriverLogs: './'
 }

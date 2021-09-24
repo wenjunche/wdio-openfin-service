@@ -7,29 +7,59 @@ REM devtools_port should NOT be set in app manifest json file
 SETLOCAL ENABLEDELAYEDEXPANSION
 SETLOCAL ENABLEEXTENSIONS
 
-SET debuggingPort=0
+SET args= 
 
 :loop  
  IF "%1"=="" GOTO cont  
  SET opt=%1
- IF "%opt%" == "--remote-debugging-port" (
-    SET debuggingPort=%2
+ SET opt2=%2
+ IF "%2" == "" (
+	SET opt2Check=%opt2% 
+ ) ELSE ( 
+	SET opt2Check=%opt2:"=%
  )
  IF "%opt%" == "--config" (
     SET startupURL=%2
+    GOTO doubleshift
+ ) ELSE (
+    IF "%opt%" == "data:" (
+      echo "skipping data:"
+    ) ELSE (
+       IF "%opt:~0,2%" == "--" (
+       	IF "%opt2Check:~0,2%" == "--" (
+         SET args=%args% %1
+       	) ELSE (
+	   IF "%opt2Check%" == "" (
+             SET args=%args% %1
+           ) ELSE (
+             IF "%opt2Check%" == "data:" (
+ 	        SET args=%args% %1
+             ) ELSE (
+             	SET args=%args% %1=%2
+             	GOTO doubleshift
+             )
+           )
+         )
+       )
+    )
  )
-
 
  SHIFT & GOTO loop  
 
+:doubleshift
+ SHIFT & SHIFT & GOTO loop  
+
 :cont
 
-echo %debuggingPort%
+echo %args%
 echo %startupURL%
 
 SET openfinLocation=%LocalAppData%\OpenFin
 
+echo OpenFinRVM.exe --config=%startupURL% --runtime-arguments="%args%"
+
 cd %openfinLocation%
-OpenFinRVM.exe --config=%startupURL% --runtime-arguments="--remote-debugging-port=%debuggingPort%"
+OpenFinRVM.exe --config=%startupURL% --runtime-arguments="%args%"
 
 ENDLOCAL
+

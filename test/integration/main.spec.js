@@ -1,77 +1,81 @@
-const assert = require('assert');
+import { equal } from 'assert';
 
 
-function switchWindowByTitle(windowTitle) {
-    let done = false;
-    while (!done) {
-        let ids = browser.getTabIds();
-        console.log(`return from getTabIds ${JSON.stringify(ids)} `);
-        for (let i=0; i<ids.length; i++) {
-            browser.switchTab(ids[i]);
-            console.log(`window title ${browser.getTitle()} `);
-            if (browser.getTitle() === windowTitle) {
-                done = true;
-                break;
+async function switchWindow(windowHandle, callback) {
+    await browser.switchToWindow(windowHandle);
+    const title = await browser.getTitle();
+    await callback(title);
+}
+
+async function switchWindowByTitle(windowTitle) {
+    const handles = await browser.getWindowHandles();
+    let handleIndex = 0;
+    let checkTitle = async (title) => {
+        console.log(title, windowTitle);
+        if (title !== windowTitle) {
+            handleIndex++;
+            if (handleIndex < handles.length) {
+                await switchWindow(handles[handleIndex], checkTitle);
+            } else {
+                // the window may not be loaded yet, so call itself again
+                await switchWindowByTitle(windowTitle);
             }
+        } else {
+            console.log(`matched ${handleIndex}`, title, windowTitle);
         }
-    }
+    };
+    await switchWindow(handles[handleIndex], checkTitle);
 }
 
 /**
  *  Check if OpenFin Javascript API fin.desktop.System.getVersion exits
  *
  **/
-function checkFinGetVersion() {
-    return browser.executeAsync(function (done) {
+ async function checkFinGetVersion(callback) {
+    const result = await browser.executeAsync(function (done) {
         if (fin && fin.desktop && fin.desktop.System && fin.desktop.System.getVersion) {
             done(true);
         } else {
             done(false);
         }
     });
+    callback(result);
+ }
+
+async function waitForFinDesktop() {
+    var callback = async (ready) => {
+        if (ready === true) {
+            readyCallback();
+        } else {
+            await browser.pause(1000);
+            await waitForFinDesktop();
+        }
+    };
+    await checkFinGetVersion(callback);
 }
 
-function waitForFinDesktop(readyCallback) {
-    while (!checkFinGetVersion()) {
-        browser.pause(1000);
-    }
-}
-
-
-describe('Test Hello OpenFin', function() {
-    it('Switch to Hello OpenFin Main window', function () {
-        switchWindowByTitle("Hello OpenFin");
-        const title = browser.getTitle();
-        assert.equal(title, 'Hello OpenFin');
+describe('Test Hello OpenFin', () => {
+    it('Switch to Hello OpenFin Main window', async () => {
+        await switchWindowByTitle("Hello OpenFin");
+        const title = await browser.getTitle();
+        equal(title, 'Hello OpenFin');
     });
 
-    it('Wait for OpenFin API ready', function() {
-        waitForFinDesktop();
+    it('Wait for OpenFin API ready', async () => {
+        await waitForFinDesktop();
     });
 
-    it("Click notification button", function() {
-        browser.click("#desktop-notification");
-        browser.pause(3000);  // Pause here so you can see the notification
+    it("Click notification button", async () => {
+        const button = await browser.$("#desktop-notification");
+        await button.click();
+        await browser.pause(3000);  // Pause here so you can see the notification
     });
 
-    it("Click CPU Info button", function() {
-        browser.click("#cpu-info");
-        browser.pause(3000);  // Pause here so you can see the CPU INFO child window
-    });
-
-    it('Switch to CPU Info window', function() {
-        switchWindowByTitle("Hello OpenFin CPU Info");
-    });
-
-    it("Close CPU Info window", function(done) {
-        browser.click("#close-app");
-    });
-
-    it('Exit OpenFin Runtime', function (done) {
+    it('Exit OpenFin Runtime', async (done) => {
         // execute OpenFin API to exit Runtime
-        browser.execute(function () {
+        await browser.execute(function () {
             fin.desktop.System.exit();
         });
-        browser.pause(2000);  // pause here to give Runtime time to exit
+        await browser.pause(2000);  // pause here to give Runtime time to exit
     });
 });

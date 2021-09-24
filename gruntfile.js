@@ -48,7 +48,7 @@ module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt)
     grunt.registerTask('default', ['build'])
-    grunt.registerTask('build', 'Build wdio-chromedriver-service', function () {
+    grunt.registerTask('build', 'Build wdio-openfin-service', function () {
         grunt.task.run([
             'eslint',
             'clean',
