@@ -3,7 +3,7 @@ WDIO OpenFIn Service
 
 ----
 
-This service helps you to run ChromeDriver seamlessly when running tests with the [WDIO testrunner](http://webdriver.io/guide/testrunner/gettingstarted.html) and OpenFin Runtime. It uses the [chromedriver](https://www.npmjs.com/package/chromedriver) NPM package that wraps the ChromeDriver for you.  Major version number of this serivce matches that of chromedriver.
+This service helps you to run ChromeDriver seamlessly when running tests with the [WDIO testrunner](http://webdriver.io/guide/testrunner/gettingstarted.html) and OpenFin Runtime. It uses the [chromedriver](https://www.npmjs.com/package/chromedriver) NPM package that wraps the ChromeDriver for you.  Major version number of this serivce matches that of chromedriver.  A branch is created for each majnor ugrade of chromedriver with 'v[major#]' as the name.
 
 Note - this service does not require a Selenium server, but uses ChromeDriver to communicate with the browser directly.
 It only supports:
