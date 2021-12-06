@@ -68,9 +68,7 @@
     "grunt-npm": "0.0.2",
     "load-grunt-tasks": "5.1.0",
     "mocha": "9.1.1",
-    "webdriverio": "7.13.0",
-    "@types/openfin": "latest",
-    "hadouken-js-adapter": "latest"
+    "webdriverio": "7.13.0"
   },
   "contributors": [
     "Wenjun Che<wenjun@openfin.co>"
