@@ -72,7 +72,7 @@ exports.checkFinGetVersion = checkFinGetVersion;
 const waitForFinDesktop = async () => {
   var callback = async ready => {
     if (ready === true) {
-      readyCallback();
+      return;
     } else {
       await browser.pause(1000);
       await waitForFinDesktop();
