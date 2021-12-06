@@ -8,6 +8,10 @@ module.exports = {
     node: true,
     es6: true
   },
+  globals: {
+    fin: "readonly",
+    browser: "readonly"
+  },
   parser: "babel-eslint",
   parserOptions: {
     ecmaVersion: 2016,
