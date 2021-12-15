@@ -2,11 +2,11 @@
  *  Launcher class for wedio OpenFin service
  */
 
-import ChromeDriver from 'chromedriver'
-import fs from 'fs-extra'
+const ChromeDriver = require('chromedriver');
+const fs = require('fs-extra');
 import getFilePath from './utils/getFilePath'
-import childProcess from 'child_process'
-import path from 'path'
+import * as childProcess from 'child_process'
+import * as path from 'path'
 
 const DEFAULT_LOG_PATH = '.';
 const DEFAULT_LOG_FILENAME = 'wdio-chromedriver.log';
@@ -17,7 +17,15 @@ const DEFAULT_CONNECTION = {
     path: '/'
 };
 
-export default class ChromeDriverLauncher {
+export class ChromeDriverLauncher {
+    config: any;
+    options: { protocol: any; hostname: any; port: any; path: any };
+    outputDir: any;
+    logFileName: string;
+    capabilities: any;
+    args: any;
+    chromedriverCustomPath: any;
+    process: childProcess.ChildProcess;
     constructor (options, capabilities, config) {
         console.log('creating ChromeDriverLauncher');
         this.config = config;
@@ -40,7 +48,7 @@ export default class ChromeDriverLauncher {
     async onPrepare () {
         console.log('onPrepare service');
         const binary = path.resolve(__dirname, '../scripts/RunOpenFin.bat');
-        const chromeOptions = {
+        const chromeOptions: any = {
             extensions: [],
             binary: binary,
             args: [`--config=${this.config.openfin.manifest}`],
@@ -54,7 +62,7 @@ export default class ChromeDriverLauncher {
         };
 
         const promises = [];
-        const driverPromise = new Promise((resolve, reject) => {
+        const driverPromise = new Promise<void>((resolve, reject) => {
             this.process = childProcess.execFile(this.chromedriverCustomPath, this.args, (err) => {
                 if (err) {
                     return reject(err);
@@ -75,7 +83,7 @@ export default class ChromeDriverLauncher {
             rvmArgs.push(`--config=${this.config.openfin.manifest}`);
             rvmArgs.push('--remote-debugging-port=9090');
             console.log(`launching ${binary} ${rvmArgs}`);
-            const rvmPromise = new Promise((resolve, reject) => {
+            const rvmPromise = new Promise<void>((resolve, reject) => {
                 const process = childProcess.execFile(binary, rvmArgs, (err) => {
                     if (err) {
                         return reject(err);

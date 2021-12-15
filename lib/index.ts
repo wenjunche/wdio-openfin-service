@@ -1,7 +1,7 @@
 declare var fin: any;
 declare var browser: any;
 
-import ChromeDriverLauncher from './launcher'
+import { ChromeDriverLauncher } from './launcher'
 
 export default class ChromeService {}
 export const launcher = ChromeDriverLauncher

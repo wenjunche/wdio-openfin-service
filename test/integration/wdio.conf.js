@@ -1,10 +1,10 @@
-import ChromeDriverLauncher from '../../lib/launcher'
+import { ChromeDriverLauncher } from '../../lib/launcher';
 
 exports.config = {
     port: 9515,
     path: '/',
     specs: [
-        './test/integration/*.spec.js'
+        './build/test/integration/*.spec.js'
     ],
 
     capabilities: [{

@@ -1,9 +1,14 @@
 {
     "compilerOptions": {
-      "outDir": "./built",
+      "outDir": "./build",
       "allowJs": true,
-      "target": "es5"
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "declaration": true,
+      "esModuleInterop": true,
+      "target": "ES2019"
     },
-    "include": ["./lib/**/*"]
+    "include": ["./lib/**/*", "./test/**/*"],
+    "exclude": ["node_modules"]
 }
 

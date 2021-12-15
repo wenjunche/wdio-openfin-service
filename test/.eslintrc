@@ -4,5 +4,6 @@
   },
   "globals": {
     "browser": true
-  }
+  },
+  "import/no-unresolved": true
 }
