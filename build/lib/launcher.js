@@ -1,13 +1,36 @@
+"use strict";
 /**
  *  Launcher class for wedio OpenFin service
  */
-
-import ChromeDriver from 'chromedriver'
-import fs from 'fs-extra'
-import getFilePath from './utils/getFilePath'
-import childProcess from 'child_process'
-import path from 'path'
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChromeDriverLauncher = void 0;
+const ChromeDriver = __importStar(require("chromedriver"));
+const fs = __importStar(require("fs-extra"));
+const getFilePath_1 = __importDefault(require("./utils/getFilePath"));
+const childProcess = __importStar(require("child_process"));
+const path = __importStar(require("path"));
 const DEFAULT_LOG_PATH = '.';
 const DEFAULT_LOG_FILENAME = 'wdio-chromedriver.log';
 const DEFAULT_CONNECTION = {
@@ -16,9 +39,8 @@ const DEFAULT_CONNECTION = {
     port: 9515,
     path: '/'
 };
-
-export default class ChromeDriverLauncher {
-    constructor (options, capabilities, config) {
+class ChromeDriverLauncher {
+    constructor(options, capabilities, config) {
         console.log('creating ChromeDriverLauncher');
         this.config = config;
         if (!options) {
@@ -36,8 +58,7 @@ export default class ChromeDriverLauncher {
         this.args = options.args || [];
         this.chromedriverCustomPath = options.chromedriverCustomPath ? path.resolve(options.chromedriverCustomPath) : ChromeDriver.path;
     }
-
-    async onPrepare () {
+    async onPrepare() {
         console.log('onPrepare service');
         const binary = path.resolve(__dirname, '../scripts/RunOpenFin.bat');
         const chromeOptions = {
@@ -52,7 +73,6 @@ export default class ChromeDriverLauncher {
             maxInstances: 1,
             'goog:chromeOptions': chromeOptions
         };
-
         const promises = [];
         const driverPromise = new Promise((resolve, reject) => {
             this.process = childProcess.execFile(this.chromedriverCustomPath, this.args, (err) => {
@@ -60,16 +80,14 @@ export default class ChromeDriverLauncher {
                     return reject(err);
                 }
             });
-
             if (this.process) {
                 if (typeof this.logFileName === 'string') {
                     this._redirectLogStream();
                 }
-                resolve()
+                resolve();
             }
         });
         promises.push(driverPromise);
-
         if (this.config.openfin.debuggerPort) {
             const rvmArgs = [];
             rvmArgs.push(`--config=${this.config.openfin.manifest}`);
@@ -82,32 +100,27 @@ export default class ChromeDriverLauncher {
                     }
                 });
                 if (process) {
-                    resolve()
+                    resolve();
                 }
             });
             promises.push(rvmPromise);
         }
-
         return Promise.all(promises).then(() => {
             console.log('onPrepare is done');
         });
     }
-
-    onComplete () {
+    onComplete() {
         if (this.process) {
             this.process.kill();
         }
     }
-
-    _redirectLogStream () {
-        const logFile = getFilePath(this.outputDir, this.logFileName)
-
+    _redirectLogStream() {
+        const logFile = getFilePath_1.default(this.outputDir, this.logFileName);
         // ensure file & directory exists
-        fs.ensureFileSync(logFile)
-
-        const logStream = fs.createWriteStream(logFile, { flags: 'w' })
-
-        this.process.stdout.pipe(logStream)
-        this.process.stderr.pipe(logStream)
+        fs.ensureFileSync(logFile);
+        const logStream = fs.createWriteStream(logFile, { flags: 'w' });
+        this.process.stdout.pipe(logStream);
+        this.process.stderr.pipe(logStream);
     }
 }
+exports.ChromeDriverLauncher = ChromeDriverLauncher;

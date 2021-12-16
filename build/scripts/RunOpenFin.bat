@@ -58,8 +58,7 @@ SET openfinLocation=%LocalAppData%\OpenFin
 
 echo OpenFinRVM.exe --config=%startupURL% --runtime-arguments="%args%"
 
-cd %openfinLocation%
-OpenFinRVM.exe --config=%startupURL% --runtime-arguments="%args%"
+%openfinLocation%\OpenFinRVM.exe --config=%startupURL% --runtime-arguments="%args%"
 
 ENDLOCAL
 
