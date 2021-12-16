@@ -41,23 +41,33 @@ The following example configuration shows how to start OpenFin Runtime with app 
 ```js
 // wdio.conf.js
 export.config = {
-  port: '9515',
-  path: '/',
-  // ...
-  services: ['openfin'],
+    port: '9515',  // port for ChromeDriver
+    path: '/',     // URL path for ChromeDriver
+
+    reporters: ['spec'],
+    logLevel: 'warn',
+    coloredLogs: true,
+
+    waitforTimeout: 10000,
+    connectionRetryTimeout: 900000,
+    connectionRetryCount: 1,
+
+    framework: 'mocha',
+    mochaOpts: {
+        ui: 'bdd'
+    },
+
+  services: [
+    ['openfin', {
+        logFileName: 'wdio-chromedriver.log',
+        outputDir: '.',
+        args: ['--verbose']  // arguments for launching Chrome Driver
+    }]
+  ],
   openfin: {
      manifest: 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/selenium.json'
   }
 };
 ```
-
-## Options
-
-### chromeDriverLogs
-Path where all logs from the ChromeDriver server should be stored.
-
-Type: `String`
-
-----
 
 For more information on WebdriverIO see the [homepage](http://webdriver.io).

@@ -7,11 +7,6 @@ exports.config = {
         './build/test/integration/*.spec.js'
     ],
 
-    capabilities: [{
-        maxInstances: 1,
-        browserName: 'openfin'
-    }],
-
     logLevel: 'verbose',
     coloredLogs: true,
 
@@ -34,6 +29,5 @@ exports.config = {
     openfin: {
         manifest: 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/selenium.json',
         debuggerPort: 9090
-    },
-    chromeDriverLogs: './'
+    }
 }
