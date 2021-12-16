@@ -4,4 +4,4 @@
  * @param  {String} defaultFilename default file name when filePath is a directory
  * @return {String}                 absolute file path
  */
-export default function getFilePath(filePath: any, defaultFilename: any): string;
+export default function getFilePath(filePath: string, defaultFilename: string): string;

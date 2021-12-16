@@ -26,8 +26,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChromeDriverLauncher = void 0;
-const ChromeDriver = require('chromedriver');
-const fs = require('fs-extra');
+const ChromeDriver = __importStar(require("chromedriver"));
+const fs = __importStar(require("fs-extra"));
 const getFilePath_1 = __importDefault(require("./utils/getFilePath"));
 const childProcess = __importStar(require("child_process"));
 const path = __importStar(require("path"));

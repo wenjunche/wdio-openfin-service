@@ -6,32 +6,34 @@ class ChromeService {
 }
 exports.default = ChromeService;
 exports.launcher = launcher_1.ChromeDriverLauncher;
-const switchWindow = async (windowHandle, callback) => {
+/**
+ * Switch focus to a particular window
+ *
+ * @param windowHandle
+ * @param callback
+ * @returns title of the window
+ */
+const switchWindow = async (windowHandle) => {
     await browser.switchToWindow(windowHandle);
-    const title = await browser.getTitle();
-    await callback(title);
+    return browser.getTitle();
 };
 exports.switchWindow = switchWindow;
+/**
+ * Switch focus to a particular window with the matching title
+ *
+ * @param windowTitle
+ */
 const switchWindowByTitle = async (windowTitle) => {
     const handles = await browser.getWindowHandles();
-    let handleIndex = 0;
-    let checkTitle = async (title) => {
-        console.log(title, windowTitle);
-        if (title !== windowTitle) {
-            handleIndex++;
-            if (handleIndex < handles.length) {
-                await exports.switchWindow(handles[handleIndex], checkTitle);
-            }
-            else {
-                // the window may not be loaded yet, so call itself again
-                await exports.switchWindowByTitle(windowTitle);
+    while (true) {
+        for (const handle of handles) {
+            const title = await exports.switchWindow(handle);
+            if (title === windowTitle) {
+                return;
             }
         }
-        else {
-            console.log(`matched ${handleIndex}`, title, windowTitle);
-        }
-    };
-    await exports.switchWindow(handles[handleIndex], checkTitle);
+        browser.pause(200);
+    }
 };
 exports.switchWindowByTitle = switchWindowByTitle;
 /**

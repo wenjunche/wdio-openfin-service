@@ -6,30 +6,34 @@ import { ChromeDriverLauncher } from './launcher'
 export default class ChromeService {}
 export const launcher = ChromeDriverLauncher
 
-export const switchWindow = async (windowHandle: any, callback: Function) => {
+/**
+ * Switch focus to a particular window
+ * 
+ * @param windowHandle 
+ * @param callback
+ * @returns title of the window
+ */
+export const switchWindow = async (windowHandle: string): Promise<string> => {
     await browser.switchToWindow(windowHandle);
-    const title = await browser.getTitle();
-    await callback(title);
+    return browser.getTitle();
 }
 
-export const switchWindowByTitle = async (windowTitle: String): Promise<void> => {
-    const handles = await browser.getWindowHandles();
-    let handleIndex = 0;
-    let checkTitle = async (title) => {
-        console.log(title, windowTitle);
-        if (title !== windowTitle) {
-            handleIndex++;
-            if (handleIndex < handles.length) {
-                await switchWindow(handles[handleIndex], checkTitle);
-            } else {
-                // the window may not be loaded yet, so call itself again
-                await switchWindowByTitle(windowTitle);
-            }
-        } else {
-            console.log(`matched ${handleIndex}`, title, windowTitle);
+/**
+ * Switch focus to a particular window with the matching title
+ * 
+ * @param windowTitle 
+ */
+export const switchWindowByTitle = async (windowTitle: string): Promise<void> => {
+    const handles: string[] = await browser.getWindowHandles();
+    while (true) {
+        for (const handle of handles) {
+            const title = await switchWindow(handle);
+            if (title === windowTitle) {
+                return;
+            }        
         }
-    };
-    await switchWindow(handles[handleIndex], checkTitle);
+        browser.pause(200);
+    }
 }
 
 /**

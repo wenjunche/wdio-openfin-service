@@ -2,10 +2,10 @@
  *  Launcher class for wedio OpenFin service
  */
 
-const ChromeDriver = require('chromedriver');
-const fs = require('fs-extra');
-import getFilePath from './utils/getFilePath'
-import * as childProcess from 'child_process'
+import * as ChromeDriver from 'chromedriver';
+import * as fs from 'fs-extra';
+import getFilePath from './utils/getFilePath';
+import * as childProcess from 'child_process';
 import * as path from 'path'
 
 const DEFAULT_LOG_PATH = '.';

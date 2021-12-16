@@ -1,8 +1,7 @@
 module.exports = {
     extends: [
-        'eslint:recommended',
-        'plugin:import/errors',
-        'plugin:import/warnings'
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/typescript',
     ],
     env: {
         node: true,
@@ -22,8 +21,5 @@ module.exports = {
         indent: [2, 4],
         'import/named': 2,
         'import/namespace': 2,
-        'import/default': 2,
-        'import/export': 2
-    },
-    'import/no-unresolved': true
+    }
 }

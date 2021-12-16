@@ -8,7 +8,7 @@ const FILE_EXTENSION_REGEX = /\.[0-9a-z]+$/i
  * @param  {String} defaultFilename default file name when filePath is a directory
  * @return {String}                 absolute file path
  */
-export default function getFilePath (filePath, defaultFilename) {
+export default function getFilePath (filePath: string, defaultFilename: string): string {
     let absolutePath = path.join(process.cwd(), filePath)
 
     // test if we already have a file (e.g. ChromeDriver.txt, .log, log.txt, etc.)
