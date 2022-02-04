@@ -1,6 +1,6 @@
 {
-  "name": "@openfin/wdio-service",
-  "version": "96.0.0",
+  "name": "wdio-openfin-service",
+  "version": "96.0.1",
   "description": "WebdriverIO service to start & stop ChromeDriver with OpenFin Runtime",
   "main": "build/lib/index.js",
   "types": "build/lib/index.d.ts",

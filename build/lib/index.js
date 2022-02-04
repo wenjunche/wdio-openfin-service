@@ -24,8 +24,8 @@ exports.switchWindow = switchWindow;
  * @param windowTitle
  */
 const switchWindowByTitle = async (windowTitle) => {
-    const handles = await browser.getWindowHandles();
     while (true) {
+        const handles = await browser.getWindowHandles();
         for (const handle of handles) {
             const title = await exports.switchWindow(handle);
             if (title === windowTitle) {
