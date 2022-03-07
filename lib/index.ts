@@ -7,32 +7,58 @@ export default class ChromeService {}
 export const launcher = ChromeDriverLauncher
 
 /**
- * Switch focus to a particular window
- * 
- * @param windowHandle 
- * @param callback
- * @returns title of the window
- */
-export const switchWindow = async (windowHandle: string): Promise<string> => {
-    await browser.switchToWindow(windowHandle);
-    return browser.getTitle();
-}
-
-/**
- * Switch focus to a particular window with the matching title
+ * Switch focus to a particular window with the matching document.title
  * 
  * @param windowTitle 
  */
-export const switchWindowByTitle = async (windowTitle: string): Promise<void> => {
+export const switchWindowByTitle = async (title: string): Promise<void> => {
+    return switchWebContentByTitle(title);
+}
+
+/**
+ * Switch focus to a particular web content with the matching document.title
+ * 
+ * @param title
+ */
+ export const switchWebContentByTitle = async (title: string): Promise<void> => {
+    const filter = async() => {
+        const currentTitle = await browser.getTitle();
+        if (title === currentTitle) {
+            return true;
+        }
+        return false;
+    }
+    return switchWebContentWithFilter(filter);
+}
+
+/**
+ * Switch focus to a particular web content with the matching URL
+ * 
+ * @param url
+ */
+ export const switchWebContentByURL = async (url: string): Promise<void> => {
+    const filter = async() => {
+        const currentUrl = await browser.getUrl();
+        if (url === currentUrl) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return switchWebContentWithFilter(filter);
+}
+
+const switchWebContentWithFilter = async (filter: () => Promise<boolean>): Promise<void> => {
     while (true) {
         const handles: string[] = await browser.getWindowHandles();
         for (const handle of handles) {
-            const title = await switchWindow(handle);
-            if (title === windowTitle) {
+            await browser.switchToWindow(handle);
+            const matched = await filter();
+            if (matched) {
                 return;
             }        
         }
-        browser.pause(200);
+        await browser.pause(500);
     }
 }
 

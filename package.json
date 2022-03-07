@@ -1,6 +1,6 @@
 {
   "name": "wdio-openfin-service",
-  "version": "96.0.1",
+  "version": "96.0.3",
   "description": "WebdriverIO service to start & stop ChromeDriver with OpenFin Runtime",
   "main": "build/lib/index.js",
   "types": "build/lib/index.d.ts",
@@ -15,7 +15,7 @@
     "clean": "rimraf ./build",
     "cp:scripts": "copyfiles scripts/* build",
     "prepublishOnly": "npm prune && npm run build",
-    "publish": "npm run prepublishOnly && npm publish",
+    "release": "npm run prepublishOnly && npm publish",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "mocha --require @babel/register --recursive test/unit",
     "test:integration": "wdio -l trace build/test/integration/wdio.conf.js"

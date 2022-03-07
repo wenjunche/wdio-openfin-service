@@ -1,8 +1,10 @@
 import { strictEqual } from 'assert';
-import { switchWindowByTitle } from '../../lib/index';
+import { switchWebContentByTitle, switchWebContentByURL } from '../../lib/index';
 
 declare var fin:any;
 declare var browser:any;
+
+const appUrl = 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/index.html';
 
 /**
  *  Check if OpenFin Javascript API fin.desktop.System.getVersion exits
@@ -33,7 +35,7 @@ async function waitForFinDesktop() {
 
 describe('Test Hello OpenFin', () => {
     it('Switch to Hello OpenFin Main window', async () => {
-        await switchWindowByTitle('Hello OpenFin');
+        await switchWebContentByTitle('Hello OpenFin');
         const title = await browser.getTitle();
         strictEqual(title, 'Hello OpenFin');
     });
@@ -46,6 +48,12 @@ describe('Test Hello OpenFin', () => {
         const button = await browser.$('#desktop-notification');
         await button.click();
         await browser.pause(3000);  // Pause here so you can see the notification
+    });
+
+    it('Switch to Hello OpenFin Main window by URL', async () => {
+        await switchWebContentByURL(appUrl);
+        const url = await browser.getUrl();
+        strictEqual(url, appUrl);
     });
 
     it('Exit OpenFin Runtime', async () => {

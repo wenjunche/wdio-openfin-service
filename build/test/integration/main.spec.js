@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("assert");
 const index_1 = require("../../lib/index");
+const appUrl = 'https://demoappdirectory.openf.in/desktop/config/apps/OpenFin/HelloOpenFin/index.html';
 /**
  *  Check if OpenFin Javascript API fin.desktop.System.getVersion exits
  *
@@ -31,7 +32,7 @@ async function waitForFinDesktop() {
 }
 describe('Test Hello OpenFin', () => {
     it('Switch to Hello OpenFin Main window', async () => {
-        await index_1.switchWindowByTitle('Hello OpenFin');
+        await index_1.switchWebContentByTitle('Hello OpenFin');
         const title = await browser.getTitle();
         assert_1.strictEqual(title, 'Hello OpenFin');
     });
@@ -42,6 +43,11 @@ describe('Test Hello OpenFin', () => {
         const button = await browser.$('#desktop-notification');
         await button.click();
         await browser.pause(3000); // Pause here so you can see the notification
+    });
+    it('Switch to Hello OpenFin Main window by URL', async () => {
+        await index_1.switchWebContentByURL(appUrl);
+        const url = await browser.getUrl();
+        assert_1.strictEqual(url, appUrl);
     });
     it('Exit OpenFin Runtime', async () => {
         // execute OpenFin API to exit Runtime

@@ -1,41 +1,67 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.waitForFinDesktop = exports.checkFinGetVersion = exports.switchWindowByTitle = exports.switchWindow = exports.launcher = void 0;
+exports.waitForFinDesktop = exports.checkFinGetVersion = exports.switchWebContentByURL = exports.switchWebContentByTitle = exports.switchWindowByTitle = exports.launcher = void 0;
 const launcher_1 = require("./launcher");
 class ChromeService {
 }
 exports.default = ChromeService;
 exports.launcher = launcher_1.ChromeDriverLauncher;
 /**
- * Switch focus to a particular window
- *
- * @param windowHandle
- * @param callback
- * @returns title of the window
- */
-const switchWindow = async (windowHandle) => {
-    await browser.switchToWindow(windowHandle);
-    return browser.getTitle();
-};
-exports.switchWindow = switchWindow;
-/**
- * Switch focus to a particular window with the matching title
+ * Switch focus to a particular window with the matching document.title
  *
  * @param windowTitle
  */
-const switchWindowByTitle = async (windowTitle) => {
+const switchWindowByTitle = async (title) => {
+    return exports.switchWebContentByTitle(title);
+};
+exports.switchWindowByTitle = switchWindowByTitle;
+/**
+ * Switch focus to a particular web content with the matching document.title
+ *
+ * @param title
+ */
+const switchWebContentByTitle = async (title) => {
+    const filter = async () => {
+        const currentTitle = await browser.getTitle();
+        if (title === currentTitle) {
+            return true;
+        }
+        return false;
+    };
+    return switchWebContentWithFilter(filter);
+};
+exports.switchWebContentByTitle = switchWebContentByTitle;
+/**
+ * Switch focus to a particular web content with the matching URL
+ *
+ * @param url
+ */
+const switchWebContentByURL = async (url) => {
+    const filter = async () => {
+        const currentUrl = await browser.getUrl();
+        if (url === currentUrl) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    return switchWebContentWithFilter(filter);
+};
+exports.switchWebContentByURL = switchWebContentByURL;
+const switchWebContentWithFilter = async (filter) => {
     while (true) {
         const handles = await browser.getWindowHandles();
         for (const handle of handles) {
-            const title = await exports.switchWindow(handle);
-            if (title === windowTitle) {
+            await browser.switchToWindow(handle);
+            const matched = await filter();
+            if (matched) {
                 return;
             }
         }
-        browser.pause(200);
+        await browser.pause(500);
     }
 };
-exports.switchWindowByTitle = switchWindowByTitle;
 /**
  *  Check if OpenFin Javascript API fin.desktop.System.getVersion exits
  *
