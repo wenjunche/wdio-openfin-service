@@ -1,6 +1,6 @@
 {
   "name": "wdio-openfin-service",
-  "version": "98.0.1",
+  "version": "94.0.1",
   "description": "WebdriverIO service to start & stop ChromeDriver with OpenFin Runtime",
   "main": "build/lib/index.js",
   "types": "build/lib/index.d.ts",
@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/wenjunche/wdio-openfin-service#readme",
   "dependencies": {
-    "chromedriver": "98.0.1",
+    "chromedriver": "94.0.0",
     "fs-extra": "10.0.0"
   },
   "devDependencies": {
